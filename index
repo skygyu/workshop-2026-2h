@@ -1,0 +1,1909 @@
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>익명 대나무숲 | 거절 실패기 워크샵</title>
+
+  <!-- Google Fonts: Noto Sans KR & Pretendard CDN -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- QRCode.js CDN (클라이언트 측 실제 스캔 가능한 QR 생성) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <!-- Tailwind Custom Theme Configuration -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Pretendard', '"Noto Sans KR"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+          },
+          colors: {
+            cream: {
+              50: '#FDFCF9',
+              100: '#F7F5EE',
+              200: '#EFECE1',
+              300: '#E3DEC9',
+            },
+            sage: {
+              50: '#F2F7F3',
+              100: '#E2EDE4',
+              200: '#C5DBC9',
+              300: '#9DC2A5',
+              400: '#72A37D',
+              500: '#4F7F5B',
+              600: '#3D6648',
+              700: '#2F5038',
+              800: '#233B2A',
+              900: '#182A1D',
+            },
+            warm: {
+              50: '#FDF7F1',
+              100: '#F9EBDD',
+              200: '#F1D4B7',
+              400: '#E09F67',
+              500: '#D18345',
+              600: '#B56930',
+            }
+          },
+          boxShadow: {
+            'soft': '0 8px 30px rgba(35, 59, 42, 0.06)',
+            'card': '0 4px 20px rgba(35, 59, 42, 0.045)',
+            'glow': '0 10px 35px rgba(79, 127, 91, 0.16)',
+            'spotlight': '0 14px 40px rgba(209, 131, 69, 0.14)',
+          },
+          keyframes: {
+            fadeUp: {
+              '0%': { opacity: '0', transform: 'translateY(12px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            gentleFloat: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-6px)' },
+            },
+            pop: {
+              '0%': { transform: 'scale(1)' },
+              '45%': { transform: 'scale(1.22)' },
+              '100%': { transform: 'scale(1)' },
+            },
+            pulseRing: {
+              '0%': { transform: 'scale(0.95)', opacity: '0.8' },
+              '70%': { transform: 'scale(1.35)', opacity: '0' },
+              '100%': { transform: 'scale(1.35)', opacity: '0' },
+            }
+          },
+          animation: {
+            'fade-up': 'fadeUp 0.45s ease-out forwards',
+            'gentle-float': 'gentleFloat 5s ease-in-out infinite',
+            'pop': 'pop 0.3s ease-out',
+            'pulse-ring': 'pulseRing 1.8s cubic-bezier(0.24, 0, 0.38, 1) infinite',
+          }
+        }
+      }
+    };
+  </script>
+</head>
+
+<body class="bg-cream-100 text-sage-900 font-sans antialiased min-h-screen overflow-x-hidden selection:bg-sage-200 selection:text-sage-900">
+
+  <!-- 배경 은은한 자연광 블롭 데코레이션 -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden -z-10" aria-hidden="true">
+    <div class="absolute -top-24 -left-24 w-96 h-96 bg-sage-200/40 rounded-full blur-3xl"></div>
+    <div class="absolute top-1/3 -right-24 w-80 h-80 bg-warm-200/35 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-24 left-1/3 w-96 h-96 bg-sage-100/60 rounded-full blur-3xl"></div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- 상단 네비게이션 바 (모바일 작성 전용 ?mode=write 모드에서는 자동 숨김) -->
+  <!-- ===================================================================== -->
+  <header id="main-navbar" class="sticky top-0 z-30 bg-cream-50/85 backdrop-blur-md border-b border-sage-200/70 transition-all">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <!-- 브랜드 로고 -->
+      <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-sage-500 text-white flex items-center justify-center shadow-sm">
+            <!-- 대나무 잎 SVG 아이콘 -->
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 21V3" />
+              <path d="M12 14c3-1 5-3.5 5-6.5-3 0-5 2-5 5" />
+              <path d="M12 10C9 9 7 6.5 7 3.5c3 0 5 2 5 5" />
+              <path d="M9 17h6" />
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-base sm:text-lg font-bold text-sage-900 tracking-tight leading-tight">익명 대나무숲</h1>
+            <p class="text-xs text-sage-600">회사 워크샵 · 거절 실패기 나눔</p>
+          </div>
+        </div>
+
+        <!-- 모바일에서 간단한 연결 상태 배지 -->
+        <div class="flex sm:hidden items-center gap-1.5 px-2.5 py-1 rounded-full bg-sage-50 border border-sage-200 text-xs font-medium text-sage-700">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span class="sync-status-short">LIVE</span>
+        </div>
+      </div>
+
+      <!-- 페이지 전환 탭 -->
+      <nav class="flex items-center bg-cream-200/80 p-1 rounded-2xl border border-sage-200/60 w-full sm:w-auto" role="tablist" aria-label="페이지 전환">
+        <button id="tab-write" type="button" role="tab" aria-selected="true"
+          class="flex-1 sm:flex-initial px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 bg-white text-sage-800 shadow-sm">
+          <span>🎋</span>
+          <span>1. QR 안내 &amp; 사연 작성</span>
+        </button>
+        <button id="tab-dashboard" type="button" role="tab" aria-selected="false"
+          class="flex-1 sm:flex-initial px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 text-sage-600 hover:text-sage-900">
+          <span>📋</span>
+          <span>2. 실시간 대시보드</span>
+          <span id="nav-count-badge" class="ml-0.5 px-2 py-0.5 text-xs rounded-full bg-sage-100 text-sage-700 font-bold">0</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===================================================================== -->
+  <!-- 메인 콘텐츠 컨테이너 -->
+  <!-- ===================================================================== -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+
+    <!-- =================================================================== -->
+    <!-- 1페이지: QR 코드 안내 및 '거절 실패기' 작성 페이지 -->
+    <!-- =================================================================== -->
+    <section id="page-write" class="space-y-8 animate-fade-up">
+
+      <!-- 모바일 전용 작성 모드(?mode=write) 상단 미니 헤더 -->
+      <div id="mobile-only-header" class="hidden text-center pt-2 pb-1 space-y-2">
+        <div class="inline-flex items-center justify-center w-14 h-14 rounded-3xl bg-sage-500 text-white shadow-glow mx-auto animate-gentle-float">
+          <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 21V3" />
+            <path d="M12 14c3-1 5-3.5 5-6.5-3 0-5 2-5 5" />
+            <path d="M12 10C9 9 7 6.5 7 3.5c3 0 5 2 5 5" />
+            <path d="M9 17h6" />
+          </svg>
+        </div>
+        <h2 class="text-2xl font-bold text-sage-900 tracking-tight">익명 대나무숲</h2>
+        <p class="text-sm text-sage-600">우리 팀의 솔직하고 따뜻한 '거절 실패기'</p>
+      </div>
+
+      <!-- 2컬럼 그리드 (진행자 모드: 좌측 QR + 우측 작성 폼 / 참가자 모드: 중앙 정렬 작성 폼) -->
+      <div id="write-layout-grid" class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+
+        <!-- [좌측 5칸] 진행자/공유용 QR 코드 생성 영역 -->
+        <div id="qr-section" class="lg:col-span-5 bg-white/95 rounded-3xl border border-sage-200/80 shadow-soft p-6 sm:p-7 space-y-6">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sage-50 border border-sage-200 text-sage-700 text-xs font-semibold mb-2">
+                <span>📱</span> 참가자 접속 안내
+              </span>
+              <h2 class="text-xl font-bold text-sage-900">QR 코드로 바로 참여하기</h2>
+              <p class="text-sm text-sage-600 mt-1 leading-relaxed">
+                참가자들이 휴대폰 카메라로 스캔하면 모바일 전용 '거절 실패기' 작성 화면으로 바로 이동합니다.
+              </p>
+            </div>
+          </div>
+
+          <!-- QR 코드 디스플레이 박스 -->
+          <div class="bg-cream-50 rounded-2xl border border-sage-200/70 p-6 flex flex-col items-center justify-center text-center space-y-4">
+            <div class="p-4 bg-white rounded-2xl shadow-card border border-sage-100">
+              <div id="qrcode-container" class="w-[184px] h-[184px] flex items-center justify-center"></div>
+            </div>
+            <p class="text-xs text-sage-600 font-medium break-all max-w-full px-2" id="qr-url-preview"></p>
+
+            <!-- 로컬 환경 안내 배너 (file:// 또는 iframe 미리보기 시 표시) -->
+            <div id="local-url-notice" class="hidden w-full text-left bg-warm-50 border border-warm-200 rounded-xl p-3 text-xs text-warm-600 leading-relaxed">
+              💡 현재 로컬/미리보기 주소입니다. 실제 워크샵에서는 이 HTML 파일을 웹(GitHub Pages, 사내 서버 등)에 올린 뒤, 아래 입력창에 배포된 주소를 넣어 QR을 갱신해 주세요.
+            </div>
+
+            <!-- 주요 QR 액션 버튼 -->
+            <div class="grid grid-cols-2 gap-2.5 w-full pt-1">
+              <button id="btn-open-qr-modal" type="button"
+                class="py-3 px-4 rounded-xl bg-sage-600 hover:bg-sage-700 active:scale-[0.98] text-white text-sm font-semibold shadow-sm transition-all flex items-center justify-center gap-1.5">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                </svg>
+                <span>QR 크게 보기</span>
+              </button>
+              <button id="btn-copy-link" type="button"
+                class="py-3 px-4 rounded-xl bg-white hover:bg-sage-50 active:scale-[0.98] text-sage-800 border border-sage-200 text-sm font-semibold transition-all flex items-center justify-center gap-1.5">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                <span>링크 복사</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 진행자용 링크 직접 수정 영역 -->
+          <div class="space-y-2 pt-1">
+            <label for="qr-url-input" class="block text-xs font-semibold text-sage-700">
+              QR 연결 링크 직접 수정 (호스팅 주소 입력 가능)
+            </label>
+            <div class="flex gap-2">
+              <input id="qr-url-input" type="url"
+                placeholder="https://your-workshop-url.com/?mode=write"
+                class="flex-1 min-w-0 px-3.5 py-2.5 rounded-xl bg-cream-50 border border-sage-200 text-xs sm:text-sm text-sage-900 focus:outline-none focus:ring-2 focus:ring-sage-400 focus:bg-white transition-all" />
+              <button id="btn-update-qr" type="button"
+                class="px-4 py-2.5 rounded-xl bg-sage-100 hover:bg-sage-200 text-sage-800 text-xs sm:text-sm font-semibold transition-colors whitespace-nowrap">
+                QR 갱신
+              </button>
+            </div>
+          </div>
+
+          <!-- 참가자 모바일 화면 미리보기 버튼 -->
+          <div class="pt-2 border-t border-sage-100 flex items-center justify-between text-xs text-sage-600">
+            <span>참가자 화면이 어떻게 보일지 궁금하신가요?</span>
+            <button id="btn-preview-mobile" type="button" class="text-sage-700 font-semibold underline underline-offset-4 hover:text-sage-900">
+              참가자 모드 보기 →
+            </button>
+          </div>
+        </div>
+
+        <!-- [우측 7칸] '거절 실패기' 경험담 작성 폼 -->
+        <div id="write-form-wrapper" class="lg:col-span-7 bg-white/95 rounded-3xl border border-sage-200/80 shadow-soft p-6 sm:p-8 relative overflow-hidden">
+          <!-- 상단 따뜻한 심리적 안정감 배너 -->
+          <div class="bg-gradient-to-br from-sage-50 to-cream-50 rounded-2xl border border-sage-200/70 p-4 sm:p-5 mb-6">
+            <div class="flex items-start gap-3">
+              <span class="text-2xl leading-none mt-0.5 select-none">🌿</span>
+              <div class="space-y-1.5">
+                <p class="text-sm sm:text-base font-bold text-sage-900 leading-snug">
+                  완벽하게 거절하지 못해도 괜찮아요.
+                </p>
+                <p class="text-xs sm:text-sm text-sage-700 leading-relaxed">
+                  작성하신 경험담은 <strong>100% 익명</strong>으로 안전하게 공유됩니다. 거절하려다 망설였던 순간, 어쩔 수 없이 '네'라고 했던 기억을 편안하게 들려주세요.
+                </p>
+                <div class="flex flex-wrap gap-2 pt-1">
+                  <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/90 border border-sage-200/80 text-[11px] font-medium text-sage-700">🔒 100% 익명 보장</span>
+                  <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/90 border border-sage-200/80 text-[11px] font-medium text-sage-700">🤝 판단 없는 공감</span>
+                  <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/90 border border-sage-200/80 text-[11px] font-medium text-sage-700">🌱 심리적 안전공간</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 작성 폼 본문 -->
+          <form id="story-form" class="space-y-5" novalidate>
+            <!-- 항목 1: 닉네임 -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <label for="input-nickname" class="text-sm font-bold text-sage-900">
+                  닉네임 <span class="text-warm-500">*</span>
+                </label>
+                <button id="btn-random-nickname" type="button"
+                  class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-sage-50 hover:bg-sage-100 active:scale-95 border border-sage-200 text-xs font-semibold text-sage-700 transition-all">
+                  <span>🎲</span>
+                  <span>랜덤 닉네임</span>
+                </button>
+              </div>
+              <input id="input-nickname" name="nickname" type="text" maxlength="24" required
+                placeholder="예: 거절못하는 판다, 마음약한 수달"
+                class="w-full px-4 py-3.5 rounded-2xl bg-cream-50 border border-sage-200 text-sm sm:text-base text-sage-900 placeholder:text-sage-400 focus:outline-none focus:ring-2 focus:ring-sage-400 focus:bg-white transition-all" />
+            </div>
+
+            <!-- 항목 2: 제목 (또는 키워드) -->
+            <div class="space-y-2">
+              <label for="input-title" class="block text-sm font-bold text-sage-900">
+                제목 (또는 키워드) <span class="text-warm-500">*</span>
+              </label>
+              <input id="input-title" name="title" type="text" maxlength="60" required
+                placeholder="예: 퇴근 5분 전 급한 부탁, #야근 #착한아이증후군"
+                class="w-full px-4 py-3.5 rounded-2xl bg-cream-50 border border-sage-200 text-sm sm:text-base text-sage-900 placeholder:text-sage-400 focus:outline-none focus:ring-2 focus:ring-sage-400 focus:bg-white transition-all" />
+            </div>
+
+            <!-- 항목 3: 내용 -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <label for="input-content" class="block text-sm font-bold text-sage-900">
+                  내용 <span class="text-warm-500">*</span>
+                </label>
+                <span id="char-count" class="text-xs text-sage-500 tabular-nums">0 / 600자</span>
+              </div>
+              <textarea id="input-content" name="content" rows="5" maxlength="600" required
+                placeholder="어떤 상황에서 거절하기 어려웠나요? 그때의 기분이나 돌아보니 드는 생각을 편하게 적어주세요."
+                class="w-full px-4 py-3.5 rounded-2xl bg-cream-50 border border-sage-200 text-sm sm:text-base text-sage-900 placeholder:text-sage-400 focus:outline-none focus:ring-2 focus:ring-sage-400 focus:bg-white transition-all resize-y leading-relaxed"></textarea>
+            </div>
+
+            <!-- 인라인 유효성 오류 메시지 -->
+            <p id="form-error-msg" class="hidden text-xs sm:text-sm font-medium text-rose-600 bg-rose-50 border border-rose-200 rounded-xl px-4 py-2.5"></p>
+
+            <!-- 제출 버튼 -->
+            <button id="btn-submit-story" type="submit"
+              class="w-full py-4 px-6 rounded-2xl bg-sage-600 hover:bg-sage-700 active:scale-[0.99] text-white font-bold text-base shadow-glow transition-all flex items-center justify-center gap-2">
+              <span>🎋</span>
+              <span>대나무숲에 사연 남기기</span>
+            </button>
+          </form>
+
+          <!-- 제출 완료 화면 (제출 성공 시 폼 대신 표시) -->
+          <div id="submit-success-view" class="hidden py-8 text-center space-y-6 animate-fade-up">
+            <div class="w-20 h-20 rounded-full bg-sage-100 text-4xl flex items-center justify-center mx-auto shadow-inner">
+              🎋
+            </div>
+            <div class="space-y-2">
+              <h3 class="text-xl sm:text-2xl font-bold text-sage-900">
+                대나무숲에 안전하게 전달되었습니다 🎋
+              </h3>
+              <p class="text-sm sm:text-base text-sage-600 leading-relaxed max-w-md mx-auto">
+                용기 내어 솔직한 이야기를 나누어 주셔서 감사합니다.<br />
+                여러분의 이야기가 오늘 워크샵에 따뜻한 공감을 더해줄 거예요.
+              </p>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-3 justify-center pt-2 max-w-md mx-auto">
+              <button id="btn-write-another" type="button"
+                class="flex-1 py-3.5 px-5 rounded-2xl bg-sage-600 hover:bg-sage-700 text-white font-semibold text-sm shadow-sm transition-all">
+                ✍️ 하나 더 작성하기
+              </button>
+              <button id="btn-go-dashboard-after-submit" type="button"
+                class="flex-1 py-3.5 px-5 rounded-2xl bg-cream-100 hover:bg-cream-200 text-sage-800 border border-sage-200 font-semibold text-sm transition-all">
+                📋 실시간 대시보드 보기
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 모바일 작성 전용 모드 하단 작은 링크 -->
+      <div id="mobile-footer-link" class="hidden text-center pt-2 pb-6">
+        <button id="btn-exit-mobile-mode" type="button"
+          class="text-xs text-sage-500 hover:text-sage-800 underline underline-offset-4 transition-colors">
+          실시간 대시보드 및 진행자 화면 보기 →
+        </button>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- 2페이지: 실시간 대시보드 및 토론 발언권 부여 -->
+    <!-- =================================================================== -->
+    <section id="page-dashboard" class="hidden space-y-7 animate-fade-up">
+
+      <!-- 1) 실시간 현황 헤더 & 통계 -->
+      <div class="bg-white/95 rounded-3xl border border-sage-200/80 shadow-soft p-5 sm:p-6 space-y-5">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div class="space-y-1.5">
+            <div class="flex flex-wrap items-center gap-2.5">
+              <!-- LIVE 실시간 배지 -->
+              <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold">
+                <span class="relative flex h-2.5 w-2.5">
+                  <span class="animate-pulse-ring absolute inline-flex h-full w-full rounded-full bg-emerald-400"></span>
+                  <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                </span>
+                <span id="live-status-label">LIVE 실시간 업데이트 중</span>
+              </span>
+              <span id="sync-mode-badge" class="text-[11px] font-medium px-2.5 py-1 rounded-full bg-cream-100 text-sage-600 border border-sage-200/60">
+                연결 확인 중...
+              </span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-bold text-sage-900 tracking-tight">
+              우리 팀의 거절 실패기 대시보드
+            </h2>
+          </div>
+
+          <!-- 통계 카드 3종 -->
+          <div class="grid grid-cols-3 gap-2.5 sm:gap-3">
+            <div class="bg-cream-50 border border-sage-200/70 rounded-2xl px-4 py-2.5 text-center min-w-[88px]">
+              <p class="text-[11px] font-semibold text-sage-600">전체 사연</p>
+              <p id="stat-total" class="text-xl sm:text-2xl font-bold text-sage-900 tabular-nums mt-0.5">0</p>
+            </div>
+            <div class="bg-sage-50 border border-sage-200 rounded-2xl px-4 py-2.5 text-center min-w-[88px]">
+              <p class="text-[11px] font-semibold text-sage-700">발언 대기</p>
+              <p id="stat-waiting" class="text-xl sm:text-2xl font-bold text-sage-700 tabular-nums mt-0.5">0</p>
+            </div>
+            <div class="bg-emerald-50/70 border border-emerald-200/80 rounded-2xl px-4 py-2.5 text-center min-w-[88px]">
+              <p class="text-[11px] font-semibold text-emerald-800">발언 완료</p>
+              <p id="stat-completed" class="text-xl sm:text-2xl font-bold text-emerald-700 tabular-nums mt-0.5">0</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 도구 막대: 필터 + 검색 + 진행자 유틸리티 버튼 -->
+        <div class="pt-4 border-t border-sage-100 flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-3">
+          <!-- 필터 & 검색 -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 flex-1">
+            <!-- 상태 필터 버튼 -->
+            <div class="inline-flex bg-cream-100 p-1 rounded-xl border border-sage-200/70 self-start" role="group" aria-label="사연 상태 필터">
+              <button type="button" data-filter="all" class="filter-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-white text-sage-900 shadow-sm transition-all">전체</button>
+              <button type="button" data-filter="waiting" class="filter-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-sage-600 hover:text-sage-900 transition-all">발언 대기</button>
+              <button type="button" data-filter="completed" class="filter-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-sage-600 hover:text-sage-900 transition-all">발언 완료</button>
+            </div>
+
+            <!-- 키워드 검색창 -->
+            <div class="relative flex-1 max-w-md">
+              <svg class="w-4 h-4 text-sage-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1010.5 18a7.5 7.5 0 006.15-3.35z" />
+              </svg>
+              <input id="search-input" type="search" placeholder="닉네임, 키워드, 내용 검색..."
+                class="w-full pl-10 pr-4 py-2 rounded-xl bg-cream-50 border border-sage-200 text-sm text-sage-900 placeholder:text-sage-400 focus:outline-none focus:ring-2 focus:ring-sage-400 focus:bg-white transition-all" />
+            </div>
+          </div>
+
+          <!-- 진행자 액션 버튼 그룹 -->
+          <div class="flex flex-wrap items-center gap-2">
+            <button id="btn-dash-qr" type="button"
+              class="px-3.5 py-2 rounded-xl bg-sage-600 hover:bg-sage-700 text-white text-xs sm:text-sm font-semibold shadow-sm transition-all flex items-center gap-1.5">
+              <span>📱</span>
+              <span>QR 크게 띄우기</span>
+            </button>
+            <button id="btn-add-sample" type="button"
+              class="px-3.5 py-2 rounded-xl bg-cream-100 hover:bg-cream-200 text-sage-800 border border-sage-200 text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5">
+              <span>✨</span>
+              <span>샘플 사연 추가</span>
+            </button>
+            <button id="btn-reset-data" type="button"
+              class="px-3.5 py-2 rounded-xl bg-white hover:bg-rose-50 text-rose-600 border border-rose-200 text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5">
+              <span>🗑️</span>
+              <span>데이터 초기화</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2) 현재 발언 중 (Spotlight) 스테이지 영역 -->
+      <div id="spotlight-stage" class="rounded-3xl border-2 border-sage-200/80 bg-gradient-to-br from-white via-cream-50 to-sage-50/70 shadow-soft p-6 sm:p-8 transition-all duration-300">
+
+        <!-- 상태 A: 현재 발언 중인 사연이 없을 때 (대기 스테이지) -->
+        <div id="spotlight-idle" class="flex flex-col md:flex-row items-center justify-between gap-6 py-2">
+          <div class="flex items-start sm:items-center gap-4 text-center sm:text-left flex-col sm:flex-row">
+            <div class="w-16 h-16 rounded-2xl bg-sage-100 text-3xl flex items-center justify-center shrink-0 mx-auto sm:mx-0">
+              🎤
+            </div>
+            <div class="space-y-1">
+              <span class="inline-block text-xs font-bold text-sage-600 uppercase tracking-wider">Discussion Spotlight</span>
+              <h3 class="text-lg sm:text-xl font-bold text-sage-900">토론 발언권을 부여해보세요</h3>
+              <p class="text-sm text-sage-600 leading-relaxed">
+                랜덤 추첨으로 다음 이야기를 뽑거나, 아래 사연 카드에서 직접 <strong>‘발언권 부여’</strong> 버튼을 눌러 큰 화면에 띄울 수 있습니다.
+              </p>
+            </div>
+          </div>
+
+          <button id="btn-random-draw" type="button"
+            class="w-full md:w-auto px-7 py-4 rounded-2xl bg-sage-600 hover:bg-sage-700 active:scale-[0.98] text-white font-bold text-base shadow-glow transition-all flex items-center justify-center gap-2.5 whitespace-nowrap">
+            <span class="text-xl">🎤</span>
+            <span>랜덤 발언권 추첨</span>
+          </button>
+        </div>
+
+        <!-- 상태 B: 랜덤 추첨 애니메이션 진행 중 -->
+        <div id="spotlight-drawing" class="hidden py-8 text-center space-y-4">
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-warm-100 text-warm-600 text-xs font-bold animate-pulse">
+            <span>🎲</span> 다음 발언 사연을 추첨하고 있습니다...
+          </div>
+          <div class="max-w-xl mx-auto bg-white rounded-2xl border-2 border-warm-200 p-6 shadow-card">
+            <p id="draw-roulette-nickname" class="text-sm font-semibold text-sage-600 mb-1">...</p>
+            <p id="draw-roulette-title" class="text-xl sm:text-2xl font-bold text-sage-900 truncate">추첨 중...</p>
+          </div>
+        </div>
+
+        <!-- 상태 C: 현재 발언 중인 사연 스포트라이트 (대형 화면 가독성 최적화) -->
+        <div id="spotlight-active" class="hidden space-y-6 animate-fade-up">
+          <!-- 상단 배지 & 타이머 바 -->
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-warm-200/70">
+            <div class="flex flex-wrap items-center gap-3">
+              <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-warm-500 text-white text-xs sm:text-sm font-bold shadow-sm">
+                <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
+                <span>🎤 현재 발언 중</span>
+              </span>
+              <span id="spot-nickname" class="text-base sm:text-lg font-bold text-sage-800">닉네임</span>
+              <span id="spot-time" class="text-xs text-sage-500">방금 전</span>
+            </div>
+
+            <!-- 발언 타이머 위젯 -->
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3 bg-white/90 px-4 py-2.5 rounded-2xl border border-warm-200/80 shadow-sm">
+              <!-- 시간 선택 (2분/3분) -->
+              <div class="inline-flex bg-cream-100 p-0.5 rounded-xl border border-sage-200/60">
+                <button type="button" data-minutes="2" class="timer-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-sage-900 shadow-sm transition-all">2분</button>
+                <button type="button" data-minutes="3" class="timer-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold text-sage-600 hover:text-sage-900 transition-all">3분</button>
+              </div>
+
+              <!-- 카운트다운 숫자 -->
+              <div id="timer-display" class="text-xl sm:text-2xl font-extrabold text-sage-900 tabular-nums tracking-tight min-w-[68px] text-center">
+                02:00
+              </div>
+
+              <!-- 타이머 컨트롤 -->
+              <div class="flex items-center gap-1.5">
+                <button id="btn-timer-toggle" type="button"
+                  class="px-3 py-1.5 rounded-xl bg-sage-600 hover:bg-sage-700 text-white text-xs font-bold transition-colors">
+                  시작
+                </button>
+                <button id="btn-timer-reset" type="button"
+                  class="px-2.5 py-1.5 rounded-xl bg-cream-100 hover:bg-cream-200 text-sage-700 text-xs font-semibold transition-colors">
+                  리셋
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 타이머 프로그레스 바 -->
+          <div class="w-full h-1.5 bg-warm-100 rounded-full overflow-hidden">
+            <div id="timer-progress-bar" class="h-full bg-sage-500 rounded-full transition-all duration-500" style="width: 100%;"></div>
+          </div>
+
+          <!-- 확대된 사연 본문 -->
+          <div class="bg-white/95 rounded-2xl border border-warm-200/70 p-6 sm:p-8 shadow-sm space-y-4">
+            <h3 id="spot-title" class="text-2xl sm:text-3xl font-bold text-sage-900 leading-snug tracking-tight"></h3>
+            <p id="spot-content" class="text-base sm:text-xl text-sage-800 leading-relaxed whitespace-pre-line font-normal"></p>
+          </div>
+
+          <!-- 스포트라이트 하단 액션 -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-1">
+            <div class="flex items-center gap-2">
+              <button id="btn-spot-empathy" type="button"
+                class="px-4 py-2.5 rounded-xl bg-sage-50 hover:bg-sage-100 border border-sage-200 text-sage-800 text-sm font-semibold transition-all flex items-center gap-1.5">
+                <span>🌿</span>
+                <span>공감해요</span>
+                <span id="spot-empathy-count" class="font-bold text-sage-700 tabular-nums">0</span>
+              </button>
+              <button id="btn-spot-return-wait" type="button"
+                class="px-4 py-2.5 rounded-xl bg-white hover:bg-cream-100 border border-sage-200 text-sage-600 text-sm font-semibold transition-all">
+                대기로 내리기
+              </button>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+              <button id="btn-spot-complete" type="button"
+                class="px-6 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-bold text-sm sm:text-base shadow-sm transition-all flex items-center justify-center gap-2">
+                <span>✅</span>
+                <span>발언 완료 처리</span>
+              </button>
+              <button id="btn-spot-next-random" type="button"
+                class="px-5 py-3 rounded-2xl bg-sage-600 hover:bg-sage-700 active:scale-[0.98] text-white font-bold text-sm sm:text-base shadow-sm transition-all flex items-center justify-center gap-1.5">
+                <span>🎤</span>
+                <span>완료 후 다음 랜덤 추첨</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3) 한눈에 보는 사연 카드 보드 -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between px-1">
+          <h3 class="text-base sm:text-lg font-bold text-sage-900 flex items-center gap-2">
+            <span>🎋 등록된 거절 실패기</span>
+            <span id="filtered-count-label" class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-sage-100 text-sage-700">0건</span>
+          </h3>
+          <span class="text-xs text-sage-500">최신 등록순</span>
+        </div>
+
+        <!-- 카드 그리드 -->
+        <div id="stories-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <!-- JS로 실시간 렌더링 -->
+        </div>
+
+        <!-- 빈 상태 안내 -->
+        <div id="stories-empty" class="hidden bg-white/80 rounded-3xl border border-dashed border-sage-300 p-12 text-center space-y-4">
+          <div class="text-4xl">🌿</div>
+          <div class="space-y-1">
+            <p id="empty-title" class="text-base sm:text-lg font-bold text-sage-800">아직 등록된 사연이 없어요</p>
+            <p id="empty-desc" class="text-sm text-sage-600">
+              상단의 ‘QR 크게 띄우기’로 참가자들을 초대하거나, 리허설용 ‘샘플 사연 추가’ 버튼을 눌러보세요.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- 모달 1: 대형 스크린용 QR 크게 보기 모달 -->
+  <!-- ===================================================================== -->
+  <div id="qr-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-sage-900/60 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="qr-modal-title">
+    <div class="bg-cream-50 rounded-3xl border border-sage-200 shadow-2xl max-w-lg w-full p-6 sm:p-9 text-center space-y-6 relative animate-fade-up">
+      <button id="btn-close-qr-modal" type="button" aria-label="닫기"
+        class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white hover:bg-sage-100 border border-sage-200 text-sage-700 flex items-center justify-center transition-colors">
+        ✕
+      </button>
+
+      <div class="space-y-2 pt-2">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sage-100 text-sage-800 text-xs font-bold">
+          🎋 익명 대나무숲 · 거절 실패기
+        </span>
+        <h3 id="qr-modal-title" class="text-2xl sm:text-3xl font-bold text-sage-900">
+          휴대폰으로 스캔해서 참여하세요
+        </h3>
+        <p class="text-sm sm:text-base text-sage-600">
+          완벽하게 거절하지 못했던 경험, 100% 익명으로 나눠주세요.
+        </p>
+      </div>
+
+      <!-- 대형 QR 컨테이너 -->
+      <div class="inline-flex p-6 bg-white rounded-3xl shadow-soft border border-sage-200 mx-auto">
+        <div id="modal-qrcode-container" class="w-[260px] h-[260px] flex items-center justify-center"></div>
+      </div>
+
+      <div class="space-y-3">
+        <p id="modal-qr-url" class="text-xs text-sage-500 break-all px-4"></p>
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-sage-200 text-sm font-semibold text-sage-800 shadow-sm">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>현재 도착한 사연: <strong id="modal-story-count" class="text-sage-700 tabular-nums">0</strong>개</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- 모달 2: 커스텀 확인 모달 (alert / confirm 대체) -->
+  <!-- ===================================================================== -->
+  <div id="confirm-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-sage-900/50 backdrop-blur-sm" role="dialog" aria-modal="true">
+    <div class="bg-white rounded-3xl border border-sage-200 shadow-2xl max-w-sm w-full p-6 space-y-5 animate-fade-up">
+      <div class="space-y-2 text-center">
+        <div id="confirm-icon" class="text-3xl">⚠️</div>
+        <h3 id="confirm-title" class="text-lg font-bold text-sage-900">확인해주세요</h3>
+        <p id="confirm-desc" class="text-sm text-sage-600 leading-relaxed"></p>
+      </div>
+      <div class="grid grid-cols-2 gap-2.5">
+        <button id="btn-confirm-cancel" type="button"
+          class="py-3 px-4 rounded-xl bg-cream-100 hover:bg-cream-200 text-sage-800 text-sm font-semibold transition-colors">
+          취소
+        </button>
+        <button id="btn-confirm-ok" type="button"
+          class="py-3 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold transition-colors">
+          확인
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- 토스트 알림 컨테이너 -->
+  <!-- ===================================================================== -->
+  <div id="toast-container" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 pointer-events-none w-[90%] max-w-md"></div>
+
+  <!-- ===================================================================== -->
+  <!-- 메인 애플리케이션 스크립트 (Firebase Firestore + 로컬 자동 폴백 동기화) -->
+  <!-- ===================================================================== -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import {
+      getFirestore,
+      collection,
+      doc,
+      addDoc,
+      updateDoc,
+      deleteDoc,
+      onSnapshot,
+      increment
+    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    /* =======================================================================
+       1. 상수 및 샘플 데이터 정의
+    ======================================================================= */
+    const RANDOM_NICKNAMES = [
+      '거절못하는 판다', '예스맨 코알라', '눈치보는 수달', '마음약한 다람쥐',
+      '배려왕 리트리버', '거절연습생 토끼', '우유부단 쿼카', '야근요정 펭귄',
+      '착한아이 고양이', '속마음숨긴 알파카', '대나무숲 너구리', '미안해요 병아리',
+      '고민많은 고슴도치', '부드러운 카피바라', '친절한 사막여우', '눈웃음 레서판다'
+    ];
+
+    const SAMPLE_STORIES = [
+      {
+        nickname: '거절못하는 판다',
+        title: '퇴근 10분 전 "혹시 이것만 잠깐 봐줄 수 있어요?"',
+        content: '분명 저녁 약속이 있었는데, 선배가 너무 급해 보여서 "네, 지금 바로 해드릴게요!"라고 대답해 버렸어요. 결국 약속에 40분 늦고 혼자 속상했던 기억이 납니다. 다음엔 "내일 오전 첫 업무로 처리해 드려도 될까요?"라고 말해보고 싶어요.'
+      },
+      {
+        nickname: '마음약한 다람쥐',
+        title: '#타부서협조 #내일이아닌데 내 업무처럼 떠안은 날',
+        content: '다른 팀에서 원래 자기들이 정리해야 할 데이터를 부탁했는데, "이번만 도와주세요"라는 말에 딱 잘라 거절하지 못했어요. 결국 제 본업 마감이 밀려서 주말에 노트북을 켰습니다. 선을 긋는 게 왜 이렇게 미안하게 느껴질까요?'
+      },
+      {
+        nickname: '우유부단 쿼카',
+        title: '점심 메뉴 정할 때마다 "저도 그거 좋아요!"',
+        content: '사실 그날 매운 걸 전혀 못 먹는 컨디션이었는데, 다들 마라탕 먹자고 하니까 분위기 깰까 봐 웃으면서 따라갔어요. 사소한 취향 하나 거절하는 것도 쉽지 않다는 걸 그날 깨달았습니다.'
+      },
+      {
+        nickname: '야근요정 펭귄',
+        title: '일정이 꽉 찼는데 "어떻게든 맞춰볼게요"라고 한 실수',
+        content: '이미 진행 중인 프로젝트가 3개나 있어서 물리적으로 불가능한 일정이었는데, 능력 없어 보일까 봐 무리해서 수락했어요. 나중에 퀄리티가 떨어져서 더 죄송해졌습니다. 솔직하게 일정을 공유하는 게 서로에게 더 좋다는 걸 배웠어요.'
+      }
+    ];
+
+    const LOCAL_STORAGE_KEY = 'bamboo_forest_stories_v1';
+    const BROADCAST_CHANNEL_NAME = 'bamboo_forest_realtime_sync_v1';
+
+    /* =======================================================================
+       2. 전역 애플리케이션 상태
+    ======================================================================= */
+    const state = {
+      stories: [],
+      currentPage: 'write',        // 'write' | 'dashboard'
+      isMobileWriteOnly: false,    // ?mode=write 또는 #write 진입 여부
+      filter: 'all',               // 'all' | 'waiting' | 'completed'
+      searchQuery: '',
+      qrTargetUrl: '',
+      isDrawing: false,
+      sampleIndex: 0,
+
+      // 저장소 모드 ('firebase' | 'local')
+      storageMode: 'local',
+      db: null,
+      auth: null,
+      currentUser: null,
+      appId: 'default-app-id',
+      broadcastChannel: null,
+      unsubscribeSnapshot: null,
+
+      // 타이머 상태
+      timerPresetSeconds: 120,
+      timerRemaining: 120,
+      timerInterval: null,
+      timerRunning: false,
+      activeSpeakerId: null,
+
+      // 커스텀 확인 모달 콜백
+      confirmCallback: null
+    };
+
+    /* =======================================================================
+       3. DOM 요소 참조
+    ======================================================================= */
+    const els = {
+      navbar: document.getElementById('main-navbar'),
+      tabWrite: document.getElementById('tab-write'),
+      tabDashboard: document.getElementById('tab-dashboard'),
+      navCountBadge: document.getElementById('nav-count-badge'),
+
+      pageWrite: document.getElementById('page-write'),
+      pageDashboard: document.getElementById('page-dashboard'),
+      mobileOnlyHeader: document.getElementById('mobile-only-header'),
+      mobileFooterLink: document.getElementById('mobile-footer-link'),
+      writeLayoutGrid: document.getElementById('write-layout-grid'),
+      qrSection: document.getElementById('qr-section'),
+      writeFormWrapper: document.getElementById('write-form-wrapper'),
+
+      qrContainer: document.getElementById('qrcode-container'),
+      modalQrContainer: document.getElementById('modal-qrcode-container'),
+      qrUrlPreview: document.getElementById('qr-url-preview'),
+      modalQrUrl: document.getElementById('modal-qr-url'),
+      modalStoryCount: document.getElementById('modal-story-count'),
+      qrUrlInput: document.getElementById('qr-url-input'),
+      localUrlNotice: document.getElementById('local-url-notice'),
+
+      storyForm: document.getElementById('story-form'),
+      inputNickname: document.getElementById('input-nickname'),
+      inputTitle: document.getElementById('input-title'),
+      inputContent: document.getElementById('input-content'),
+      charCount: document.getElementById('char-count'),
+      formErrorMsg: document.getElementById('form-error-msg'),
+      btnSubmitStory: document.getElementById('btn-submit-story'),
+      submitSuccessView: document.getElementById('submit-success-view'),
+
+      liveStatusLabel: document.getElementById('live-status-label'),
+      syncModeBadge: document.getElementById('sync-mode-badge'),
+      statTotal: document.getElementById('stat-total'),
+      statWaiting: document.getElementById('stat-waiting'),
+      statCompleted: document.getElementById('stat-completed'),
+      filteredCountLabel: document.getElementById('filtered-count-label'),
+      searchInput: document.getElementById('search-input'),
+      storiesGrid: document.getElementById('stories-grid'),
+      storiesEmpty: document.getElementById('stories-empty'),
+      emptyTitle: document.getElementById('empty-title'),
+      emptyDesc: document.getElementById('empty-desc'),
+
+      spotlightStage: document.getElementById('spotlight-stage'),
+      spotlightIdle: document.getElementById('spotlight-idle'),
+      spotlightDrawing: document.getElementById('spotlight-drawing'),
+      spotlightActive: document.getElementById('spotlight-active'),
+      drawRouletteNickname: document.getElementById('draw-roulette-nickname'),
+      drawRouletteTitle: document.getElementById('draw-roulette-title'),
+      spotNickname: document.getElementById('spot-nickname'),
+      spotTime: document.getElementById('spot-time'),
+      spotTitle: document.getElementById('spot-title'),
+      spotContent: document.getElementById('spot-content'),
+      spotEmpathyCount: document.getElementById('spot-empathy-count'),
+
+      timerDisplay: document.getElementById('timer-display'),
+      timerProgressBar: document.getElementById('timer-progress-bar'),
+      btnTimerToggle: document.getElementById('btn-timer-toggle'),
+      btnTimerReset: document.getElementById('btn-timer-reset'),
+
+      qrModal: document.getElementById('qr-modal'),
+      confirmModal: document.getElementById('confirm-modal'),
+      confirmIcon: document.getElementById('confirm-icon'),
+      confirmTitle: document.getElementById('confirm-title'),
+      confirmDesc: document.getElementById('confirm-desc'),
+      btnConfirmOk: document.getElementById('btn-confirm-ok'),
+      btnConfirmCancel: document.getElementById('btn-confirm-cancel'),
+      toastContainer: document.getElementById('toast-container')
+    };
+
+    /* =======================================================================
+       4. 유틸리티 함수 (XSS 방지, 시간 포맷, 토스트, 클립보드, 알림음)
+    ======================================================================= */
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function formatTime(timestamp) {
+      if (!timestamp) return '방금 전';
+      const date = new Date(timestamp);
+      const diffSec = Math.floor((Date.now() - timestamp) / 1000);
+      if (diffSec < 45) return '방금 전';
+      if (diffSec < 3600) return `${Math.floor(diffSec / 60)}분 전`;
+      return date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function showToast(message, type = 'success') {
+      const toast = document.createElement('div');
+      const colorMap = {
+        success: 'bg-sage-800 text-white border-sage-700',
+        warm: 'bg-warm-600 text-white border-warm-500',
+        error: 'bg-rose-600 text-white border-rose-500'
+      };
+      toast.className = `pointer-events-auto px-5 py-3 rounded-2xl border shadow-lg text-sm font-medium flex items-center gap-2 transition-all duration-300 opacity-0 translate-y-2 ${colorMap[type] || colorMap.success}`;
+      toast.textContent = message;
+      els.toastContainer.appendChild(toast);
+
+      requestAnimationFrame(() => {
+        toast.classList.remove('opacity-0', 'translate-y-2');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', '-translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 2800);
+    }
+
+    function copyTextToClipboard(text) {
+      try {
+        const tempInput = document.createElement('textarea');
+        tempInput.value = text;
+        tempInput.setAttribute('readonly', '');
+        tempInput.style.position = 'fixed';
+        tempInput.style.left = '-9999px';
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        const copied = document.execCommand('copy');
+        document.body.removeChild(tempInput);
+        if (copied) {
+          showToast('참여 링크가 복사되었습니다! 📋');
+        } else {
+          showToast('링크 복사에 실패했습니다. 직접 선택해 복사해 주세요.', 'error');
+        }
+      } catch (err) {
+        showToast('링크 복사 중 오류가 발생했습니다.', 'error');
+      }
+    }
+
+    // 부드러운 Web Audio 차임벨 (외부 음원 파일 없이 타이머 종료 알림)
+    function playGentleChime() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const notes = [523.25, 659.25, 783.99]; // C5, E5, G5 따뜻한 화음
+        notes.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.14);
+          gain.gain.setValueAtTime(0.001, ctx.currentTime + idx * 0.14);
+          gain.gain.exponentialRampToValueAtTime(0.12, ctx.currentTime + idx * 0.14 + 0.04);
+          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + idx * 0.14 + 0.8);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime + idx * 0.14);
+          osc.stop(ctx.currentTime + idx * 0.14 + 0.85);
+        });
+      } catch (e) {
+        // 브라우저 정책으로 오디오 재생이 막힌 경우 조용히 무시
+      }
+    }
+
+    // 커스텀 확인 모달 열기
+    function openConfirmModal({ icon = '⚠️', title, desc, okText = '확인', okStyle = 'danger', onConfirm }) {
+      els.confirmIcon.textContent = icon;
+      els.confirmTitle.textContent = title;
+      els.confirmDesc.textContent = desc;
+      els.btnConfirmOk.textContent = okText;
+      els.btnConfirmOk.className = okStyle === 'danger'
+        ? 'py-3 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold transition-colors'
+        : 'py-3 px-4 rounded-xl bg-sage-600 hover:bg-sage-700 text-white text-sm font-semibold transition-colors';
+      state.confirmCallback = onConfirm;
+      els.confirmModal.classList.remove('hidden');
+      els.confirmModal.classList.add('flex');
+    }
+
+    function closeConfirmModal() {
+      els.confirmModal.classList.add('hidden');
+      els.confirmModal.classList.remove('flex');
+      state.confirmCallback = null;
+    }
+
+    /* =======================================================================
+       5. 데이터 저장소 계층 (Firebase Firestore 우선 + 로컬 동기화 폴백)
+    ======================================================================= */
+    function getPublicCollectionRef() {
+      return collection(state.db, 'artifacts', state.appId, 'public', 'data', 'bamboo_stories');
+    }
+
+    function getPublicDocRef(docId) {
+      return doc(state.db, 'artifacts', state.appId, 'public', 'data', 'bamboo_stories', docId);
+    }
+
+    async function initStorageAndSync() {
+      // 1) 환경에 Firebase 설정이 주입된 경우 Firestore 실시간 동기화 시도
+      const hasFirebaseConfig = typeof __firebase_config !== 'undefined' && __firebase_config;
+
+      if (hasFirebaseConfig) {
+        try {
+          const firebaseConfig = typeof __firebase_config === 'string'
+            ? JSON.parse(__firebase_config)
+            : __firebase_config;
+
+          state.appId = typeof __app_id !== 'undefined' && __app_id ? __app_id : 'default-app-id';
+          const app = initializeApp(firebaseConfig);
+          state.auth = getAuth(app);
+          state.db = getFirestore(app);
+
+          // RULE 3: 인증 완료를 반드시 먼저 대기 (Custom Token 우선 -> 익명 로그인 폴백)
+          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+            await signInWithCustomToken(state.auth, __initial_auth_token);
+          } else {
+            await signInAnonymously(state.auth);
+          }
+
+          state.currentUser = state.auth.currentUser;
+          if (!state.currentUser) {
+            throw new Error('Firebase 인증 사용자 정보를 가져오지 못했습니다.');
+          }
+
+          state.storageMode = 'firebase';
+          updateSyncBadgeUI('클라우드 실시간 동기화');
+
+          // RULE 1 & RULE 2: 단순 collection 쿼리 + 메모리 내 정렬 + 에러 콜백 필수
+          const colRef = getPublicCollectionRef();
+          state.unsubscribeSnapshot = onSnapshot(
+            colRef,
+            (snapshot) => {
+              const loaded = [];
+              snapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                loaded.push({
+                  id: docSnap.id,
+                  nickname: data.nickname || '익명 대나무',
+                  title: data.title || '',
+                  content: data.content || '',
+                  createdAt: typeof data.createdAt === 'number' ? data.createdAt : Date.now(),
+                  status: data.status || 'waiting',
+                  empathyCount: typeof data.empathyCount === 'number' ? data.empathyCount : 0
+                });
+              });
+              // 최신순 정렬 (메모리 내 처리)
+              loaded.sort((a, b) => b.createdAt - a.createdAt);
+              state.stories = loaded;
+              renderAllViews();
+            },
+            (error) => {
+              console.warn('Firestore onSnapshot 오류, 로컬 폴백으로 전환합니다:', error);
+              activateLocalFallback();
+            }
+          );
+
+          return;
+        } catch (err) {
+          console.warn('Firebase 초기화 실패, 로컬 모드로 자동 폴백합니다:', err);
+        }
+      }
+
+      // 2) 로컬 PC 단독 HTML 실행 환경 등 Firebase 미지원 시 자동 폴백
+      activateLocalFallback();
+    }
+
+    function activateLocalFallback() {
+      state.storageMode = 'local';
+      updateSyncBadgeUI('로컬 브라우저 실시간 동기화');
+
+      // 초기 데이터 로드
+      state.stories = readLocalStories();
+      renderAllViews();
+
+      // BroadcastChannel로 동일 브라우저 내 탭 간 실시간 동기화
+      try {
+        if ('BroadcastChannel' in window) {
+          state.broadcastChannel = new BroadcastChannel(BROADCAST_CHANNEL_NAME);
+          state.broadcastChannel.onmessage = (event) => {
+            if (event.data && event.data.type === 'SYNC_STORIES') {
+              state.stories = readLocalStories();
+              renderAllViews();
+            }
+          };
+        }
+      } catch (e) {
+        // file:// 일부 구형 환경에서는 BroadcastChannel이 제한될 수 있으므로 storage 이벤트와 병행
+      }
+
+      // storage 이벤트 리스너로 다른 탭에서 변경 시 자동 갱신
+      window.addEventListener('storage', (e) => {
+        if (e.key === LOCAL_STORAGE_KEY) {
+          state.stories = readLocalStories();
+          renderAllViews();
+        }
+      });
+    }
+
+    function readLocalStories() {
+      try {
+        const raw = window.localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) return [];
+        return parsed.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      } catch (e) {
+        return state.stories || [];
+      }
+    }
+
+    function saveLocalStories(stories) {
+      const sorted = [...stories].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      state.stories = sorted;
+      try {
+        window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(sorted));
+      } catch (e) {
+        console.warn('로컬 저장소 쓰기 제한:', e);
+      }
+      try {
+        if (state.broadcastChannel) {
+          state.broadcastChannel.postMessage({ type: 'SYNC_STORIES', timestamp: Date.now() });
+        }
+      } catch (e) {
+        // 무시
+      }
+      renderAllViews();
+    }
+
+    function updateSyncBadgeUI(text) {
+      els.syncModeBadge.textContent = text;
+    }
+
+    /* ----- CRUD 메서드 (Firebase / Local 통합 인터페이스) ----- */
+    async function createStory({ nickname, title, content }) {
+      const payload = {
+        nickname: nickname.trim(),
+        title: title.trim(),
+        content: content.trim(),
+        createdAt: Date.now(),
+        status: 'waiting',
+        empathyCount: 0
+      };
+
+      if (state.storageMode === 'firebase') {
+        if (!state.currentUser) return;
+        await addDoc(getPublicCollectionRef(), payload);
+      } else {
+        const newStory = {
+          id: 'local_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+          ...payload
+        };
+        saveLocalStories([newStory, ...state.stories]);
+      }
+    }
+
+    async function updateStoryFields(storyId, fields) {
+      if (state.storageMode === 'firebase') {
+        if (!state.currentUser) return;
+        await updateDoc(getPublicDocRef(storyId), fields);
+      } else {
+        const updated = state.stories.map((s) => (s.id === storyId ? { ...s, ...fields } : s));
+        saveLocalStories(updated);
+      }
+    }
+
+    async function incrementStoryEmpathy(storyId) {
+      if (state.storageMode === 'firebase') {
+        if (!state.currentUser) return;
+        await updateDoc(getPublicDocRef(storyId), { empathyCount: increment(1) });
+      } else {
+        const updated = state.stories.map((s) =>
+          s.id === storyId ? { ...s, empathyCount: (s.empathyCount || 0) + 1 } : s
+        );
+        saveLocalStories(updated);
+      }
+    }
+
+    async function deleteSingleStory(storyId) {
+      if (state.storageMode === 'firebase') {
+        if (!state.currentUser) return;
+        await deleteDoc(getPublicDocRef(storyId));
+      } else {
+        const updated = state.stories.filter((s) => s.id !== storyId);
+        saveLocalStories(updated);
+      }
+    }
+
+    async function clearAllStories() {
+      if (state.storageMode === 'firebase') {
+        if (!state.currentUser) return;
+        const deletions = state.stories.map((s) => deleteDoc(getPublicDocRef(s.id)));
+        await Promise.all(deletions);
+      } else {
+        saveLocalStories([]);
+      }
+    }
+
+    // 특정 사연에 발언권 부여 (기존 발언 중인 사연이 있으면 자동으로 '발언 대기'로 전환)
+    async function grantFloorToStory(storyId) {
+      const prevSpeakers = state.stories.filter((s) => s.status === 'speaking' && s.id !== storyId);
+
+      if (state.storageMode === 'firebase') {
+        if (!state.currentUser) return;
+        const ops = prevSpeakers.map((s) => updateDoc(getPublicDocRef(s.id), { status: 'waiting' }));
+        ops.push(updateDoc(getPublicDocRef(storyId), { status: 'speaking' }));
+        await Promise.all(ops);
+      } else {
+        const updated = state.stories.map((s) => {
+          if (s.id === storyId) return { ...s, status: 'speaking' };
+          if (s.status === 'speaking') return { ...s, status: 'waiting' };
+          return s;
+        });
+        saveLocalStories(updated);
+      }
+
+      // 새 발언자 등장 시 타이머 리셋
+      resetTimer(state.timerPresetSeconds);
+      // 대시보드 상단 스포트라이트로 부드럽게 스크롤
+      els.spotlightStage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    /* =======================================================================
+       6. QR 코드 생성 및 URL 관리
+    ======================================================================= */
+    function detectInitialQrUrl() {
+      const href = window.location.href;
+      const protocol = window.location.protocol;
+
+      if (protocol === 'http:' || protocol === 'https:') {
+        try {
+          const urlObj = new URL(href);
+          urlObj.searchParams.set('mode', 'write');
+          urlObj.hash = '';
+          els.localUrlNotice.classList.add('hidden');
+          return urlObj.toString();
+        } catch (e) {
+          // fallback below
+        }
+      }
+
+      // 로컬 파일(file://) 또는 iframe 미리보기(about:srcdoc / blob:) 환경 안내
+      els.localUrlNotice.classList.remove('hidden');
+      if (protocol === 'file:') {
+        return href.split('?')[0].split('#')[0] + '?mode=write';
+      }
+      return 'https://workshop-bamboo-forest.example.com/?mode=write';
+    }
+
+    function renderQrCodes(url) {
+      const safeUrl = (url || '').trim();
+      if (!safeUrl) return;
+      state.qrTargetUrl = safeUrl;
+
+      els.qrUrlInput.value = safeUrl;
+      els.qrUrlPreview.textContent = safeUrl;
+      els.modalQrUrl.textContent = safeUrl;
+
+      // 1페이지 카드용 QR 생성
+      els.qrContainer.innerHTML = '';
+      try {
+        new QRCode(els.qrContainer, {
+          text: safeUrl,
+          width: 180,
+          height: 180,
+          colorDark: '#233B2A',
+          colorLight: '#FFFFFF',
+          correctLevel: QRCode.CorrectLevel.M
+        });
+      } catch (err) {
+        els.qrContainer.innerHTML = '<p class="text-xs text-rose-500 p-4">주소가 너무 길어 QR을 생성할 수 없습니다. 짧은 주소를 입력해 주세요.</p>';
+      }
+
+      // 대형 모달용 QR 생성
+      els.modalQrContainer.innerHTML = '';
+      try {
+        new QRCode(els.modalQrContainer, {
+          text: safeUrl,
+          width: 256,
+          height: 256,
+          colorDark: '#233B2A',
+          colorLight: '#FFFFFF',
+          correctLevel: QRCode.CorrectLevel.M
+        });
+      } catch (err) {
+        els.modalQrContainer.innerHTML = '<p class="text-xs text-rose-500 p-4">QR 생성 오류</p>';
+      }
+    }
+
+    /* =======================================================================
+       7. 네비게이션 및 모바일 전용 작성 모드(?mode=write) 전환
+    ======================================================================= */
+    function checkInitialRoute() {
+      const params = new URLSearchParams(window.location.search);
+      const modeParam = params.get('mode');
+      const hash = window.location.hash.replace('#', '').toLowerCase();
+
+      if (modeParam === 'write' || hash === 'write') {
+        setMobileWriteOnlyMode(true);
+        switchPage('write');
+      } else if (modeParam === 'dashboard' || hash === 'dashboard') {
+        setMobileWriteOnlyMode(false);
+        switchPage('dashboard');
+      } else {
+        setMobileWriteOnlyMode(false);
+        switchPage('write');
+      }
+    }
+
+    function setMobileWriteOnlyMode(enabled) {
+      state.isMobileWriteOnly = enabled;
+
+      if (enabled) {
+        els.navbar.classList.add('hidden');
+        els.qrSection.classList.add('hidden');
+        els.mobileOnlyHeader.classList.remove('hidden');
+        els.mobileFooterLink.classList.remove('hidden');
+        els.writeLayoutGrid.className = 'max-w-xl mx-auto';
+        els.writeFormWrapper.classList.remove('lg:col-span-7');
+      } else {
+        els.navbar.classList.remove('hidden');
+        els.qrSection.classList.remove('hidden');
+        els.mobileOnlyHeader.classList.add('hidden');
+        els.mobileFooterLink.classList.add('hidden');
+        els.writeLayoutGrid.className = 'grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start';
+        els.writeFormWrapper.classList.add('lg:col-span-7');
+      }
+    }
+
+    function switchPage(page) {
+      state.currentPage = page;
+
+      if (page === 'write') {
+        els.pageWrite.classList.remove('hidden');
+        els.pageDashboard.classList.add('hidden');
+
+        els.tabWrite.className = 'flex-1 sm:flex-initial px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 bg-white text-sage-800 shadow-sm';
+        els.tabWrite.setAttribute('aria-selected', 'true');
+        els.tabDashboard.className = 'flex-1 sm:flex-initial px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 text-sage-600 hover:text-sage-900';
+        els.tabDashboard.setAttribute('aria-selected', 'false');
+      } else {
+        // 대시보드로 이동할 때는 상단 메뉴 복원
+        if (state.isMobileWriteOnly) {
+          setMobileWriteOnlyMode(false);
+        }
+        els.pageWrite.classList.add('hidden');
+        els.pageDashboard.classList.remove('hidden');
+
+        els.tabDashboard.className = 'flex-1 sm:flex-initial px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 bg-white text-sage-800 shadow-sm';
+        els.tabDashboard.setAttribute('aria-selected', 'true');
+        els.tabWrite.className = 'flex-1 sm:flex-initial px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 text-sage-600 hover:text-sage-900';
+        els.tabWrite.setAttribute('aria-selected', 'false');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* =======================================================================
+       8. 발언 타이머 로직 (2분 / 3분)
+    ======================================================================= */
+    function updateTimerUI() {
+      const mins = Math.floor(state.timerRemaining / 60);
+      const secs = state.timerRemaining % 60;
+      els.timerDisplay.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+      const pct = Math.max(0, (state.timerRemaining / state.timerPresetSeconds) * 100);
+      els.timerProgressBar.style.width = `${pct}%`;
+
+      // 남은 시간에 따른 부드러운 색상 변화
+      els.timerDisplay.classList.remove('text-sage-900', 'text-warm-600', 'text-rose-600');
+      els.timerProgressBar.classList.remove('bg-sage-500', 'bg-warm-500', 'bg-rose-500');
+
+      if (state.timerRemaining === 0) {
+        els.timerDisplay.classList.add('text-rose-600');
+        els.timerProgressBar.classList.add('bg-rose-500');
+      } else if (state.timerRemaining <= 30) {
+        els.timerDisplay.classList.add('text-warm-600');
+        els.timerProgressBar.classList.add('bg-warm-500');
+      } else {
+        els.timerDisplay.classList.add('text-sage-900');
+        els.timerProgressBar.classList.add('bg-sage-500');
+      }
+
+      els.btnTimerToggle.textContent = state.timerRunning ? '일시정지' : (state.timerRemaining === 0 ? '다시 시작' : '시작');
+    }
+
+    function pauseTimer() {
+      if (state.timerInterval) {
+        clearInterval(state.timerInterval);
+        state.timerInterval = null;
+      }
+      state.timerRunning = false;
+      updateTimerUI();
+    }
+
+    function startTimer() {
+      if (state.timerRemaining <= 0) {
+        state.timerRemaining = state.timerPresetSeconds;
+      }
+      if (state.timerRunning) return;
+      state.timerRunning = true;
+      updateTimerUI();
+
+      state.timerInterval = setInterval(() => {
+        if (state.timerRemaining > 0) {
+          state.timerRemaining -= 1;
+          updateTimerUI();
+          if (state.timerRemaining === 0) {
+            pauseTimer();
+            playGentleChime();
+            showToast('⏰ 발언 시간이 종료되었습니다! 따뜻한 박수로 마무리해 주세요.', 'warm');
+          }
+        }
+      }, 1000);
+    }
+
+    function resetTimer(seconds = state.timerPresetSeconds) {
+      pauseTimer();
+      state.timerPresetSeconds = seconds;
+      state.timerRemaining = seconds;
+      updateTimerUI();
+    }
+
+    /* =======================================================================
+       9. 랜덤 발언권 추첨 애니메이션
+    ======================================================================= */
+    async function runRandomDraw() {
+      if (state.isDrawing) return;
+
+      const waitingStories = state.stories.filter((s) => s.status === 'waiting');
+      if (waitingStories.length === 0) {
+        showToast('발언 대기 중인 사연이 없습니다. 새로운 사연을 기다리거나 완료된 사연을 되돌려주세요.', 'warm');
+        return;
+      }
+
+      state.isDrawing = true;
+      pauseTimer();
+
+      // 추첨 중 UI 표시
+      els.spotlightIdle.classList.add('hidden');
+      els.spotlightActive.classList.add('hidden');
+      els.spotlightDrawing.classList.remove('hidden');
+      els.spotlightStage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      // 부드러운 룰렛 애니메이션
+      let ticks = 0;
+      const maxTicks = waitingStories.length === 1 ? 6 : 16;
+
+      const chosen = waitingStories[Math.floor(Math.random() * waitingStories.length)];
+
+      const runTick = () => {
+        const preview = waitingStories[ticks % waitingStories.length];
+        els.drawRouletteNickname.textContent = preview.nickname;
+        els.drawRouletteTitle.textContent = preview.title;
+        ticks += 1;
+
+        if (ticks < maxTicks) {
+          const delay = 70 + ticks * 12; // 점점 느려지는 효과
+          setTimeout(runTick, delay);
+        } else {
+          // 최종 선정 반영
+          els.drawRouletteNickname.textContent = chosen.nickname;
+          els.drawRouletteTitle.textContent = chosen.title;
+
+          setTimeout(async () => {
+            state.isDrawing = false;
+            await grantFloorToStory(chosen.id);
+            playGentleChime();
+            showToast(`🎤 '${chosen.nickname}'님의 사연에 발언권이 부여되었습니다!`, 'warm');
+          }, 350);
+        }
+      };
+
+      runTick();
+    }
+
+    /* =======================================================================
+       10. 대시보드 및 전체 뷰 렌더링
+    ======================================================================= */
+    function renderAllViews() {
+      const total = state.stories.length;
+      const waitingCount = state.stories.filter((s) => s.status === 'waiting').length;
+      const completedCount = state.stories.filter((s) => s.status === 'completed').length;
+
+      // 상단 카운트 & 모달 카운트 업데이트
+      els.navCountBadge.textContent = total;
+      els.statTotal.textContent = total;
+      els.statWaiting.textContent = waitingCount;
+      els.statCompleted.textContent = completedCount;
+      els.modalStoryCount.textContent = total;
+
+      renderSpotlight();
+      renderStoryCards();
+    }
+
+    function renderSpotlight() {
+      if (state.isDrawing) return;
+
+      const activeStory = state.stories.find((s) => s.status === 'speaking');
+
+      if (!activeStory) {
+        if (state.activeSpeakerId !== null) {
+          state.activeSpeakerId = null;
+          pauseTimer();
+        }
+        els.spotlightIdle.classList.remove('hidden');
+        els.spotlightDrawing.classList.add('hidden');
+        els.spotlightActive.classList.add('hidden');
+        els.spotlightStage.classList.remove('border-warm-400', 'shadow-spotlight', 'from-warm-50/80');
+        els.spotlightStage.classList.add('border-sage-200/80', 'shadow-soft');
+        return;
+      }
+
+      // 새 발언자로 바뀐 경우 타이머 초기화
+      if (state.activeSpeakerId !== activeStory.id) {
+        state.activeSpeakerId = activeStory.id;
+        resetTimer(state.timerPresetSeconds);
+      }
+
+      els.spotlightIdle.classList.add('hidden');
+      els.spotlightDrawing.classList.add('hidden');
+      els.spotlightActive.classList.remove('hidden');
+
+      els.spotlightStage.classList.remove('border-sage-200/80', 'shadow-soft');
+      els.spotlightStage.classList.add('border-warm-400', 'shadow-spotlight', 'from-warm-50/80');
+
+      els.spotNickname.textContent = activeStory.nickname;
+      els.spotTime.textContent = formatTime(activeStory.createdAt);
+      els.spotTitle.textContent = activeStory.title;
+      els.spotContent.textContent = activeStory.content;
+      els.spotEmpathyCount.textContent = activeStory.empathyCount || 0;
+    }
+
+    function renderStoryCards() {
+      const q = state.searchQuery.trim().toLowerCase();
+
+      const filtered = state.stories.filter((story) => {
+        // 필터 조건
+        if (state.filter === 'waiting' && story.status !== 'waiting') return false;
+        if (state.filter === 'completed' && story.status !== 'completed') return false;
+
+        // 검색 조건
+        if (q) {
+          const hay = `${story.nickname} ${story.title} ${story.content}`.toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+
+      els.filteredCountLabel.textContent = `${filtered.length}건`;
+
+      if (filtered.length === 0) {
+        els.storiesGrid.innerHTML = '';
+        els.storiesEmpty.classList.remove('hidden');
+        if (state.stories.length > 0) {
+          els.emptyTitle.textContent = '조건에 맞는 사연이 없습니다';
+          els.emptyDesc.textContent = '다른 필터를 선택하거나 검색어를 지워보세요.';
+        } else {
+          els.emptyTitle.textContent = '아직 등록된 사연이 없어요';
+          els.emptyDesc.textContent = '상단의 ‘QR 크게 띄우기’로 참가자들을 초대하거나, 리허설용 ‘샘플 사연 추가’ 버튼을 눌러보세요.';
+        }
+        return;
+      }
+
+      els.storiesEmpty.classList.add('hidden');
+
+      els.storiesGrid.innerHTML = filtered.map((story) => {
+        const isSpeaking = story.status === 'speaking';
+        const isCompleted = story.status === 'completed';
+
+        // 카드 외형 스타일
+        let cardStyle = 'bg-white border-sage-200/80 hover:border-sage-300 hover:shadow-soft';
+        if (isSpeaking) {
+          cardStyle = 'bg-warm-50/60 border-warm-400 ring-2 ring-warm-200 shadow-spotlight';
+        } else if (isCompleted) {
+          cardStyle = 'bg-cream-50/90 border-sage-200/60 opacity-80 hover:opacity-100';
+        }
+
+        // 상태 뱃지
+        let statusBadge = '<span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-sage-50 text-sage-700 border border-sage-200">발언 대기</span>';
+        if (isSpeaking) {
+          statusBadge = '<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-warm-500 text-white"><span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>발언 중</span>';
+        } else if (isCompleted) {
+          statusBadge = '<span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">✓ 발언 완료</span>';
+        }
+
+        // 우측 발언권 액션 버튼
+        let floorActionBtn = `
+          <button type="button" data-action="grant" data-id="${escapeHtml(story.id)}"
+            class="px-3.5 py-2 rounded-xl bg-sage-600 hover:bg-sage-700 active:scale-95 text-white text-xs font-bold shadow-sm transition-all flex items-center gap-1">
+            <span>🎤</span><span>발언권 부여</span>
+          </button>`;
+
+        if (isSpeaking) {
+          floorActionBtn = `
+            <button type="button" data-action="focus-stage" data-id="${escapeHtml(story.id)}"
+              class="px-3.5 py-2 rounded-xl bg-warm-500 hover:bg-warm-600 text-white text-xs font-bold transition-all flex items-center gap-1">
+              <span>✨</span><span>무대 보기</span>
+            </button>`;
+        } else if (isCompleted) {
+          floorActionBtn = `
+            <button type="button" data-action="revert" data-id="${escapeHtml(story.id)}"
+              class="px-3 py-2 rounded-xl bg-white hover:bg-sage-50 text-sage-700 border border-sage-200 text-xs font-semibold transition-all">
+              ↺ 대기로 되돌리기
+            </button>`;
+        }
+
+        const initial = escapeHtml((story.nickname || '익').trim().charAt(0));
+
+        return `
+          <article class="rounded-3xl border p-5 sm:p-6 flex flex-col justify-between gap-4 transition-all duration-200 shadow-card ${cardStyle}">
+            <div class="space-y-3.5">
+              <!-- 카드 상단: 작성자 정보 & 상태 배지 -->
+              <div class="flex items-start justify-between gap-2">
+                <div class="flex items-center gap-2.5 min-w-0">
+                  <div class="w-9 h-9 rounded-full ${isSpeaking ? 'bg-warm-100 text-warm-600' : 'bg-sage-100 text-sage-700'} font-bold text-sm flex items-center justify-center shrink-0">
+                    ${initial}
+                  </div>
+                  <div class="min-w-0">
+                    <p class="text-sm font-bold text-sage-900 truncate">${escapeHtml(story.nickname)}</p>
+                    <p class="text-[11px] text-sage-500">${formatTime(story.createdAt)}</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-1.5 shrink-0">
+                  ${statusBadge}
+                  <button type="button" data-action="delete" data-id="${escapeHtml(story.id)}" title="사연 삭제"
+                    class="w-7 h-7 rounded-lg text-sage-400 hover:text-rose-600 hover:bg-rose-50 flex items-center justify-center transition-colors text-xs">
+                    ✕
+                  </button>
+                </div>
+              </div>
+
+              <!-- 제목 및 내용 -->
+              <div class="space-y-2">
+                <h4 class="text-base sm:text-lg font-bold text-sage-900 leading-snug break-words ${isCompleted ? 'line-through decoration-sage-400/70 text-sage-700' : ''}">
+                  ${escapeHtml(story.title)}
+                </h4>
+                <p class="text-sm text-sage-700 leading-relaxed whitespace-pre-line break-words">
+                  ${escapeHtml(story.content)}
+                </p>
+              </div>
+            </div>
+
+            <!-- 카드 하단: 공감 버튼 & 발언권 버튼 -->
+            <div class="pt-3.5 border-t border-sage-100 flex items-center justify-between gap-2">
+              <button type="button" data-action="empathy" data-id="${escapeHtml(story.id)}"
+                class="empathy-btn px-3 py-2 rounded-xl bg-sage-50 hover:bg-sage-100 active:scale-95 border border-sage-200/80 text-sage-800 text-xs font-semibold transition-all flex items-center gap-1.5">
+                <span>🌿</span>
+                <span>공감해요</span>
+                <span class="font-bold text-sage-700 tabular-nums">${story.empathyCount || 0}</span>
+              </button>
+
+              ${floorActionBtn}
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    /* =======================================================================
+       11. 이벤트 바인딩
+    ======================================================================= */
+    function bindEvents() {
+      // 상단 탭 전환
+      els.tabWrite.addEventListener('click', () => switchPage('write'));
+      els.tabDashboard.addEventListener('click', () => switchPage('dashboard'));
+
+      // 해시 변경 대응
+      window.addEventListener('hashchange', checkInitialRoute);
+
+      // QR 갱신 & 복사 & 모달 열기/닫기
+      document.getElementById('btn-update-qr').addEventListener('click', () => {
+        const val = els.qrUrlInput.value.trim();
+        if (!val) {
+          showToast('QR로 변환할 주소를 입력해 주세요.', 'error');
+          return;
+        }
+        renderQrCodes(val);
+        showToast('QR 코드가 새 주소로 갱신되었습니다! 📱');
+      });
+
+      els.qrUrlInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          document.getElementById('btn-update-qr').click();
+        }
+      });
+
+      document.getElementById('btn-copy-link').addEventListener('click', () => {
+        copyTextToClipboard(state.qrTargetUrl);
+      });
+
+      const openQrModal = () => {
+        els.qrModal.classList.remove('hidden');
+        els.qrModal.classList.add('flex');
+      };
+      const closeQrModal = () => {
+        els.qrModal.classList.add('hidden');
+        els.qrModal.classList.remove('flex');
+      };
+
+      document.getElementById('btn-open-qr-modal').addEventListener('click', openQrModal);
+      document.getElementById('btn-dash-qr').addEventListener('click', openQrModal);
+      document.getElementById('btn-close-qr-modal').addEventListener('click', closeQrModal);
+      els.qrModal.addEventListener('click', (e) => {
+        if (e.target === els.qrModal) closeQrModal();
+      });
+
+      // 참가자 모바일 모드 미리보기 & 빠져나오기
+      document.getElementById('btn-preview-mobile').addEventListener('click', () => {
+        setMobileWriteOnlyMode(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        showToast('참가자가 QR 스캔 시 보게 되는 모바일 작성 화면입니다.');
+      });
+
+      document.getElementById('btn-exit-mobile-mode').addEventListener('click', () => {
+        setMobileWriteOnlyMode(false);
+        switchPage('dashboard');
+      });
+
+      // 랜덤 닉네임 생성
+      document.getElementById('btn-random-nickname').addEventListener('click', () => {
+        const current = els.inputNickname.value.trim();
+        let next = RANDOM_NICKNAMES[Math.floor(Math.random() * RANDOM_NICKNAMES.length)];
+        if (next === current) {
+          next = RANDOM_NICKNAMES[(RANDOM_NICKNAMES.indexOf(next) + 1) % RANDOM_NICKNAMES.length];
+        }
+        els.inputNickname.value = next;
+        els.inputNickname.focus();
+      });
+
+      // 글자 수 카운터
+      els.inputContent.addEventListener('input', () => {
+        els.charCount.textContent = `${els.inputContent.value.length} / 600자`;
+      });
+
+      // 사연 제출 폼 처리
+      els.storyForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const nickname = els.inputNickname.value.trim();
+        const title = els.inputTitle.value.trim();
+        const content = els.inputContent.value.trim();
+
+        if (!nickname || !title || !content) {
+          els.formErrorMsg.textContent = '닉네임, 제목(키워드), 내용을 모두 작성해 주세요.';
+          els.formErrorMsg.classList.remove('hidden');
+          return;
+        }
+        els.formErrorMsg.classList.add('hidden');
+
+        els.btnSubmitStory.disabled = true;
+        els.btnSubmitStory.innerHTML = '<span>🌿</span><span>전달하는 중...</span>';
+
+        try {
+          await createStory({ nickname, title, content });
+          els.storyForm.reset();
+          els.charCount.textContent = '0 / 600자';
+          els.storyForm.classList.add('hidden');
+          els.submitSuccessView.classList.remove('hidden');
+          showToast('대나무숲에 안전하게 전달되었습니다 🎋');
+        } catch (err) {
+          console.error('사연 저장 오류:', err);
+          els.formErrorMsg.textContent = '전송 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.';
+          els.formErrorMsg.classList.remove('hidden');
+        } finally {
+          els.btnSubmitStory.disabled = false;
+          els.btnSubmitStory.innerHTML = '<span>🎋</span><span>대나무숲에 사연 남기기</span>';
+        }
+      });
+
+      // 제출 완료 후 버튼들
+      document.getElementById('btn-write-another').addEventListener('click', () => {
+        els.submitSuccessView.classList.add('hidden');
+        els.storyForm.classList.remove('hidden');
+        els.inputNickname.focus();
+      });
+
+      document.getElementById('btn-go-dashboard-after-submit').addEventListener('click', () => {
+        els.submitSuccessView.classList.add('hidden');
+        els.storyForm.classList.remove('hidden');
+        switchPage('dashboard');
+      });
+
+      // 대시보드 필터 버튼
+      document.querySelectorAll('.filter-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          state.filter = btn.dataset.filter;
+          document.querySelectorAll('.filter-btn').forEach((b) => {
+            b.className = 'filter-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-sage-600 hover:text-sage-900 transition-all';
+          });
+          btn.className = 'filter-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-white text-sage-900 shadow-sm transition-all';
+          renderStoryCards();
+        });
+      });
+
+      // 키워드 검색
+      els.searchInput.addEventListener('input', (e) => {
+        state.searchQuery = e.target.value;
+        renderStoryCards();
+      });
+
+      // 리허설용 샘플 사연 추가
+      document.getElementById('btn-add-sample').addEventListener('click', async () => {
+        const sample = SAMPLE_STORIES[state.sampleIndex % SAMPLE_STORIES.length];
+        state.sampleIndex += 1;
+        try {
+          await createStory(sample);
+          showToast(`샘플 사연 '${sample.nickname}'이(가) 추가되었습니다 ✨`);
+        } catch (err) {
+          showToast('샘플 추가 중 오류가 발생했습니다.', 'error');
+        }
+      });
+
+      // 데이터 초기화 (커스텀 확인 모달 사용)
+      document.getElementById('btn-reset-data').addEventListener('click', () => {
+        if (state.stories.length === 0) {
+          showToast('초기화할 사연이 없습니다.', 'warm');
+          return;
+        }
+        openConfirmModal({
+          icon: '🗑️',
+          title: '모든 사연을 초기화할까요?',
+          desc: `현재 등록된 ${state.stories.length}건의 사연이 모두 삭제됩니다. 워크샵 본 세션 시작 전 리허설 데이터를 비울 때 사용해 주세요.`,
+          okText: '모두 삭제',
+          okStyle: 'danger',
+          onConfirm: async () => {
+            pauseTimer();
+            await clearAllStories();
+            showToast('모든 사연이 깔끔하게 초기화되었습니다.');
+          }
+        });
+      });
+
+      // 확인 모달 버튼
+      els.btnConfirmCancel.addEventListener('click', closeConfirmModal);
+      els.btnConfirmOk.addEventListener('click', async () => {
+        const cb = state.confirmCallback;
+        closeConfirmModal();
+        if (cb) await cb();
+      });
+      els.confirmModal.addEventListener('click', (e) => {
+        if (e.target === els.confirmModal) closeConfirmModal();
+      });
+
+      // 스포트라이트 랜덤 추첨
+      document.getElementById('btn-random-draw').addEventListener('click', runRandomDraw);
+
+      // 스포트라이트 타이머 프리셋 (2분/3분)
+      document.querySelectorAll('.timer-preset-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const mins = parseInt(btn.dataset.minutes, 10);
+          document.querySelectorAll('.timer-preset-btn').forEach((b) => {
+            b.className = 'timer-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold text-sage-600 hover:text-sage-900 transition-all';
+          });
+          btn.className = 'timer-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-sage-900 shadow-sm transition-all';
+          resetTimer(mins * 60);
+        });
+      });
+
+      els.btnTimerToggle.addEventListener('click', () => {
+        if (state.timerRunning) pauseTimer();
+        else startTimer();
+      });
+
+      els.btnTimerReset.addEventListener('click', () => {
+        resetTimer(state.timerPresetSeconds);
+      });
+
+      // 스포트라이트 공감 / 대기로 내리기 / 발언 완료 / 완료 후 다음 랜덤 추첨
+      document.getElementById('btn-spot-empathy').addEventListener('click', async (e) => {
+        if (!state.activeSpeakerId) return;
+        e.currentTarget.classList.add('animate-pop');
+        setTimeout(() => e.currentTarget.classList.remove('animate-pop'), 300);
+        await incrementStoryEmpathy(state.activeSpeakerId);
+      });
+
+      document.getElementById('btn-spot-return-wait').addEventListener('click', async () => {
+        if (!state.activeSpeakerId) return;
+        pauseTimer();
+        await updateStoryFields(state.activeSpeakerId, { status: 'waiting' });
+        showToast('사연을 다시 발언 대기 상태로 내렸습니다.');
+      });
+
+      document.getElementById('btn-spot-complete').addEventListener('click', async () => {
+        if (!state.activeSpeakerId) return;
+        pauseTimer();
+        await updateStoryFields(state.activeSpeakerId, { status: 'completed' });
+        showToast('✅ 발언이 완료 처리되었습니다! 따뜻한 나눔 감사해요.');
+      });
+
+      document.getElementById('btn-spot-next-random').addEventListener('click', async () => {
+        if (!state.activeSpeakerId) return;
+        const currentId = state.activeSpeakerId;
+        pauseTimer();
+        await updateStoryFields(currentId, { status: 'completed' });
+
+        // 완료 반영 후 남은 대기 사연이 있으면 바로 다음 추첨 실행
+        setTimeout(() => {
+          const remaining = state.stories.filter((s) => s.status === 'waiting');
+          if (remaining.length > 0) {
+            runRandomDraw();
+          } else {
+            showToast('🎉 모든 대기 사연의 발언이 완료되었습니다!', 'warm');
+          }
+        }, 200);
+      });
+
+      // 사연 카드 보드 이벤트 위임
+      els.storiesGrid.addEventListener('click', async (e) => {
+        const btn = e.target.closest('button[data-action]');
+        if (!btn) return;
+        const action = btn.dataset.action;
+        const id = btn.dataset.id;
+
+        if (action === 'empathy') {
+          btn.classList.add('animate-pop');
+          setTimeout(() => btn.classList.remove('animate-pop'), 300);
+          await incrementStoryEmpathy(id);
+        } else if (action === 'grant') {
+          await grantFloorToStory(id);
+          const target = state.stories.find((s) => s.id === id);
+          if (target) {
+            showToast(`🎤 '${target.nickname}'님에게 발언권을 부여했습니다!`, 'warm');
+          }
+        } else if (action === 'focus-stage') {
+          els.spotlightStage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else if (action === 'revert') {
+          await updateStoryFields(id, { status: 'waiting' });
+          showToast('사연을 다시 발언 대기 상태로 되돌렸습니다.');
+        } else if (action === 'delete') {
+          const target = state.stories.find((s) => s.id === id);
+          openConfirmModal({
+            icon: '🌿',
+            title: '이 사연을 삭제할까요?',
+            desc: target ? `'${target.nickname}'님의 사연을 목록에서 삭제합니다.` : '선택한 사연을 삭제합니다.',
+            okText: '삭제',
+            okStyle: 'danger',
+            onConfirm: async () => {
+              await deleteSingleStory(id);
+              showToast('사연이 삭제되었습니다.');
+            }
+          });
+        }
+      });
+
+      // ESC 키로 모달 닫기
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeQrModal();
+          closeConfirmModal();
+        }
+      });
+    }
+
+    /* =======================================================================
+       12. 앱 초기화
+    ======================================================================= */
+    async function initApp() {
+      bindEvents();
+      checkInitialRoute();
+      const initialUrl = detectInitialQrUrl();
+      renderQrCodes(initialUrl);
+      updateTimerUI();
+      await initStorageAndSync();
+    }
+
+    window.addEventListener('DOMContentLoaded', initApp);
+  </script>
+</body>
+</html>
+```
